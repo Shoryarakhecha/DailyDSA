@@ -1,0 +1,141 @@
+
+GFG Hard problem---> https://www.geeksforgeeks.org/problems/print-all-lcs-sequences3413/1
+recurssion soltion -->Time Complex city O(3^(n+m))-->not optimized gives you TLE
+class Solution {
+    public int max=-1;
+    public void helper(int n,int m,String s1,String s2,int indx1,int indx2,StringBuilder sb,Set<String>ans){
+        if(indx1==n || indx2==m ){
+            max=Math.max(max,sb.length());
+            ans.add(sb.toString());
+            return;
+        }
+        if(s1.charAt(indx1)==s2.charAt(indx2)){
+            sb.append(s1.charAt(indx1));
+            helper(n,m,s1,s2,indx1+1,indx2+1,sb,ans);
+            sb.deleteCharAt(sb.length() - 1);  
+        }
+        helper(n,m,s1,s2,indx1+1,indx2,sb,ans);
+        helper(n,m,s1,s2,indx1,indx2+1,sb,ans);
+        
+    }
+    public List<String> allLCS(String s1, String s2) {
+        Set<String>ans=new TreeSet<>();
+        int n=s1.length();
+        int m=s2.length();
+        int count=0;
+        StringBuilder sb=new StringBuilder();
+        helper(n,m,s1,s2,0,0,sb,ans);
+        List<String>result=new ArrayList<>();
+        for(String str:ans){
+            if(str.length()==max) result.add(str);
+        }
+        return result;
+    }
+}
+
+
+DP solution optimized -->Time Complex City(O(n*m))
+class Solution {
+    public List<String> allLCS(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int[][] dp = new int[n+1][m+1];
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+                if(s1.charAt(i-1) == s2.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        
+        int lcsLen = dp[n][m];
+        Set<String> ans = new TreeSet<>();
+        
+        helper(s1, s2, n, m, dp, lcsLen, new StringBuilder(), ans);
+        
+        return new ArrayList<>(ans);
+    }
+    
+    private void helper(String s1, String s2, int i, int j, int[][] dp, int lcsLen, StringBuilder sb, Set<String> ans) {
+        if(lcsLen==0){
+            ans.add(sb.reverse().toString());
+            sb.reverse();
+            return;
+        }
+        if(i == 0 || j == 0) return;
+
+        if(s1.charAt(i-1)==s2.charAt(j-1)){
+            sb.append(s1.charAt(i-1));
+            helper(s1,s2,i-1,j-1,dp,lcsLen-1,sb,ans);
+            sb.deleteCharAt(sb.length()-1);
+        }else if(dp[i-1][j]>dp[i][j-1]){
+            helper(s1,s2,i-1,j,dp,lcsLen,sb,ans);
+        }else if(dp[i-1][j]<dp[i][j-1]){
+            helper(s1,s2,i,j-1,dp,lcsLen,sb,ans);
+        }else{
+            helper(s1,s2,i-1,j,dp,lcsLen,sb,ans);
+            helper(s1,s2,i,j-1,dp,lcsLen,sb,ans);
+        }
+                            
+    }
+}
+memoization more  optimized
+class Solution {
+    public List<String> allLCS(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        
+        // Build LCS DP table
+        int[][] dp = new int[n+1][m+1];
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+                if(s1.charAt(i-1) == s2.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        
+        int lcsLen = dp[n][m];
+        Set<String> ans = new HashSet<>();
+        
+        helper(s1, s2, n, m, dp, lcsLen, new StringBuilder(), ans);
+        
+        return new ArrayList<>(ans);
+    }
+    
+    private void helper(String s1, String s2, int i, int j, int[][] dp, int len, 
+                        StringBuilder sb, Set<String> ans) {
+        // Base case: we've built a complete LCS
+        if(len == 0) {
+            ans.add(sb.reverse().toString());
+            sb.reverse();  // Reverse back for next iteration
+            return;
+        }
+        
+        // Out of bounds
+        if(i == 0 || j == 0) return;
+        
+        // Characters match - include this character
+        if(s1.charAt(i-1) == s2.charAt(j-1)) {
+            sb.append(s1.charAt(i-1));
+            helper(s1, s2, i-1, j-1, dp, len-1, sb, ans);
+            sb.deleteCharAt(sb.length()-1);
+        } 
+        // Characters don't match - explore both paths that maintain LCS length
+        else {
+            // Go up (skip from s1)
+            if(dp[i-1][j] == dp[i][j]) {
+                helper(s1, s2, i-1, j, dp, len, sb, ans);
+            }
+            // Go left (skip from s2)
+            if(dp[i][j-1] == dp[i][j]) {
+                helper(s1, s2, i, j-1, dp, len, sb, ans);
+            }
+        }
+    }
+}
+
