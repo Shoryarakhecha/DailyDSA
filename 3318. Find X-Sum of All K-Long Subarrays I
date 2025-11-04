@@ -1,0 +1,50 @@
+easy---->3318. Find X-Sum of All K-Long Subarrays I
+solution-->
+class Solution {
+    class Pair implements Comparable<Pair> {
+        int num, freq;
+        Pair(int num, int freq) {
+        this.num = num;
+        this.freq = freq;
+        }
+            @Override
+            public int compareTo(Pair p2) {
+                if (this.freq != p2.freq) {
+                    return p2.freq - this.freq;
+                }
+                return p2.num - this.num;
+            }
+        }
+
+    public int[] findXSum(int[] nums, int k, int x) {
+        int n = nums.length;
+        int[] result = new int[n - k + 1];
+        
+        for (int i = 0; i <= n - k; i++) {
+            Map<Integer, Integer> map = new HashMap<>();
+            
+            for (int j = i; j < i + k; j++) {
+                map.put(nums[j], map.getOrDefault(nums[j], 0) + 1);
+            }
+            
+            PriorityQueue<Pair> pq = new PriorityQueue<>();
+            
+            for (int key : map.keySet()) {
+                pq.add(new Pair(key, map.get(key)));
+            }
+            
+            int sum = 0;
+            int count = Math.min(x, pq.size()); 
+            
+            while (count > 0) {
+                Pair cur = pq.poll();
+                sum += cur.num * cur.freq;
+                count--;
+            }
+            
+            result[i] = sum;
+        }
+        
+        return result;
+    }
+}
