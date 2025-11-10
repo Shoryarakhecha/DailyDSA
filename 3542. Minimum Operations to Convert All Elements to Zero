@@ -1,0 +1,18 @@
+medium -->3542. Minimum Operations to Convert All Elements to Zero-->https://leetcode.com/problems/minimum-operations-to-convert-all-elements-to-zero/description/?envType=daily-question&envId=2025-11-10
+solution-->o(nLog(n))
+class Solution {
+    public int minOperations(int[] nums) {
+        int stack[] = new int[nums.length + 1];
+        int top = 0;
+        int ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+            while (stack[top] > nums[i]) {
+                top--;
+                ans++;
+            }
+            if (stack[top] != nums[i])
+                stack[++top] = nums[i];
+        }
+        return ans + top;
+    }
+}
