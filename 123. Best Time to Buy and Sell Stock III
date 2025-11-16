@@ -1,0 +1,48 @@
+hard-->123. Best Time to Buy and Sell Stock III
+
+recurssive solution -->TLE
+class Solution {
+    public int helper(int i, int buy, int cap, int[] arr) {
+        if (cap == 0) return 0; 
+        if (i == arr.length) return 0; 
+
+        if (buy == 1) {
+            return Math.max(-arr[i] + helper(i + 1, 0, cap, arr), helper(i + 1, 1, cap, arr));
+        } else {
+            return Math.max(arr[i] + helper(i + 1, 1, cap - 1, arr), helper(i + 1, 0, cap, arr));
+        }
+    }
+
+    public int maxProfit(int[] prices) {
+        return helper(0, 1, 2, prices); 
+    }
+}
+optimized solution ---> o(n) ,o(n)
+class Solution {
+    public static int maxProfit(int[] prices) {
+        // code here
+        int n=prices.length;
+        int leftmin=prices[0];
+        int leftProfit[]=new int[n];
+        
+        int rightmax=prices[n-1];
+        int rightProfit[]=new int[n];
+        
+        for(int i=1;i<n;i++){
+            leftmin=Math.min(leftmin,prices[i]);
+            leftProfit[i]=Math.max(leftProfit[i-1],prices[i]-leftmin);
+        }
+        
+        for(int i=n-2;i>=0;i--){
+            rightmax=Math.max(rightmax,prices[i]);
+            rightProfit[i]=Math.max(rightProfit[i+1],rightmax-prices[i]);
+        }
+        int profit=0;
+        for(int i=0;i<n;i++){
+            profit=Math.max(leftProfit[i]+rightProfit[i],profit);
+        }
+        return profit;
+    }
+}
+
+ 
