@@ -1,0 +1,58 @@
+188. Best Time to Buy and Sell Stock IV
+recursion-->solution
+class Solution {
+    public int helper(int indx,int[] prices,boolean buy,int k){
+        if(k==0) return 0 ;
+        if(indx==prices.length) return 0;
+        if(buy){
+            return Math.max(-prices[indx]+helper(indx+1,prices,false,k),0+helper(indx+1,prices,true,k));
+        }else{
+            return Math.max(prices[indx]+helper(indx+1,prices,true,k-1),0+helper(indx+1,prices,false,k));
+        }
+    }
+    public int maxProfit(int k, int[] prices) {
+        return helper(0,prices,true,k);
+    }
+
+}
+memo solution-->
+class Solution {
+    int[][][] memo;
+
+    public int helper(int indx, int[] prices, boolean buy, int k) {
+        if (k == 0) return 0;
+        if (indx == prices.length) return 0;
+
+        int buyIndex = buy ? 1 : 0;
+        if (memo[indx][buyIndex][k] != -1) {
+            return memo[indx][buyIndex][k];
+        }
+
+        int profit = 0;
+
+        if (buy) { 
+
+            profit = Math.max(
+                -prices[indx] + helper(indx + 1, prices, false, k),
+                0 + helper(indx + 1, prices, true, k)
+            );
+        } else { 
+
+            profit = Math.max(
+                prices[indx] + helper(indx + 1, prices, true, k - 1),
+                0 + helper(indx + 1, prices, false, k)
+            );
+        }
+        return memo[indx][buyIndex][k] = profit;
+    }
+
+    public int maxProfit(int k, int[] prices) {
+        memo = new int[prices.length][2][k + 1];
+        for (int[][] row : memo) {
+            for (int[] col : row) {
+                Arrays.fill(col, -1);
+            }
+        }
+        return helper(0, prices, true, k);
+    }
+}
