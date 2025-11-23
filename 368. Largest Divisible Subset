@@ -1,0 +1,64 @@
+368. Largest Divisible Subset
+
+recursive solution gives you tle--
+class Solution {
+    public List<Integer>li;
+    public void helper(int []arr,int indx,int prev,List<Integer>ans){
+        if(indx==arr.length){
+            if(ans.size()>li.size()) li=new ArrayList<>(ans);
+            return;
+        }
+        helper(arr,indx+1,prev,ans);
+        if(prev==-1 || arr[indx]%arr[prev]==0){
+            ans.add(arr[indx]);
+            helper(arr,indx+1,indx,ans);
+            ans.remove(ans.size()-1);
+        }
+    }
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        li=new ArrayList<>();
+        Arrays.sort(nums);
+        helper(nums,0,-1,new ArrayList<>());
+        return li;
+    }
+}
+optimized solution
+import java.util.*;
+
+class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        int n = nums.length;
+        List<Integer> li = new ArrayList<>();
+        if (n == 0) return li;
+
+        Arrays.sort(nums);
+
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1); 
+        
+        int[] hash = new int[n];
+        int maxi = 1;
+        int lastIndex = 0;
+
+        for (int i = 0; i < n; i++) {
+            hash[i] = i; 
+            for (int j = 0; j < i; j++) {
+                if (nums[i] % nums[j] == 0 && 1 + dp[j] > dp[i]) {
+                    dp[i] = 1 + dp[j];
+                    hash[i] = j;
+                }
+            }
+            if (dp[i] > maxi) {
+                maxi = dp[i];
+                lastIndex = i;
+            }
+        }
+        li.add(nums[lastIndex]);
+        while (hash[lastIndex] != lastIndex) {
+            lastIndex = hash[lastIndex];
+            li.add(nums[lastIndex]);
+        }
+
+        return li;
+    }
+}
