@@ -1,0 +1,24 @@
+Matrix Chain Multiplication
+
+
+class Solution {
+    static Integer dp[][];
+    static int mcm_helper(int []arr,int i,int j){
+        if(i==j) return 0;
+        if(dp[i][j]!=null) return dp[i][j];
+        int ans=Integer.MAX_VALUE;
+        for(int k=i;k<j;k++){
+            int cost1=mcm_helper(arr,i,k);
+            int cost2=mcm_helper(arr,k+1,j);
+            int cost3=arr[i-1]*arr[k]*arr[j];
+            int finalC=cost1+cost2+cost3;
+            ans=Math.min(ans,finalC);
+        }
+        return dp[i][j]=ans;
+    }
+    static int matrixMultiplication(int arr[]) {
+        dp=new Integer[arr.length][arr.length];
+        return mcm_helper(arr,1,arr.length-1);
+        
+    }
+}
