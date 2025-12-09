@@ -1,0 +1,30 @@
+3583. Count Special Triplets
+
+
+
+class Solution {
+    public int specialTriplets(int[] nums) {
+        long ans=0;
+        int mod = 1000000007;
+        Map<Integer,Integer>left=new HashMap<>();        
+        Map<Integer,Integer>right=new HashMap<>();   
+        for(int num:nums){
+            right.put(num,right.getOrDefault(num,0)+1);
+        }     
+        for(int ind=0;ind<nums.length;ind++){
+            int num=nums[ind];
+            right.put(num,right.get(num)-1);
+            if(right.get(num)==0){
+                right.remove(num);
+            }
+            int l=left.containsKey(num*2)?left.get(num*2):0;
+            int r=right.containsKey(num*2)?right.get(num*2):0;
+
+            ans = (ans%mod + ((long)l*r)%mod)%mod;
+            left.put(num,left.getOrDefault(num,0)+1);
+
+        }
+        return (int)ans;
+
+    }
+}
