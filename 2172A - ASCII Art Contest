@@ -1,0 +1,14 @@
+codeForces-->2172A - ASCII Art Contest
+
+import java.util.*;
+public class Solution{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int a =sc.nextInt(), b=sc.nextInt(), c=sc.nextInt();
+        int max=Math.max(Math.max(a,b),c);
+        int min=Math.min(Math.min(a,b),c);
+        int sum=a+b+c;
+        if(max-min<10) System.out.print("final " + (sum-min-max));
+        else System.out.print("check again");
+    }
+}
