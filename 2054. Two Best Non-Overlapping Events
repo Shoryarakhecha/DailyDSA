@@ -1,0 +1,43 @@
+2054. Two Best Non-Overlapping Events
+
+
+class Solution {
+    class Pair implements Comparable<Pair> {
+        int si, ei, points;
+        
+        Pair(int si, int ei, int pt) {
+            this.si = si;
+            this.ei = ei;
+            this.points = pt;
+        }
+        
+        @Override
+        public int compareTo(Pair other) {
+            return this.si - other.si;
+        }   
+    }
+    
+    public int maxTwoEvents(int[][] events) {
+        int n = events.length;
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        
+        for (int i = 0; i < n; i++) {
+            pq.offer(new Pair(events[i][0], events[i][1], events[i][2]));
+        }
+        
+        PriorityQueue<int[]> endPq = new PriorityQueue<>((a, b) -> a[0] - b[0]); 
+        int maxPoints = 0;
+        int result = 0;
+        
+        while (!pq.isEmpty()) {
+            Pair cur = pq.poll();
+            while (!endPq.isEmpty() && endPq.peek()[0] < cur.si) {
+                maxPoints = Math.max(maxPoints, endPq.poll()[1]);
+            }
+            result = Math.max(result, cur.points + maxPoints);            
+            endPq.offer(new int[]{cur.ei, cur.points});
+        }
+        
+        return result;
+    }
+}
