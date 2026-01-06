@@ -1,0 +1,23 @@
+Max Xor Subarray of size K-->medium---https://www.geeksforgeeks.org/problems/max-xor-subarray-of-size-k/1
+
+class Solution {
+    public int maxSubarrayXOR(int[] arr, int k) {
+        int xor = 0;
+        int maxXor = 0;  
+        int n = arr.length;
+        int i=0;
+        for(;i<k;i++){
+            xor^=arr[i];
+        }
+         maxXor = Math.max(maxXor, xor);
+        i=0;
+        for(int j=k;j<n;j++){
+            xor ^= arr[i];
+            xor ^= arr[j];
+            maxXor = Math.max(maxXor, xor);
+            i++;
+        }
+
+        return maxXor;
+    }
+}
