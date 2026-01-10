@@ -1,0 +1,31 @@
+Substrings with K Distinct
+
+
+class Solution {
+    public int countSubstr(String s, int k) {
+        return atMostK(s, k) - atMostK(s, k - 1);
+    }
+    
+    public int atMostK(String s, int k) {
+        if (k == 0) return 0;
+        
+        HashMap<Character, Integer> map = new HashMap<>();
+        int count = 0;
+        int j = 0;
+        char[] arr = s.toCharArray();
+        
+        for (int i = 0; i < arr.length; i++) {
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+
+            while (map.size() > k) {
+                map.put(arr[j], map.get(arr[j]) - 1);
+                if (map.get(arr[j]) == 0) {
+                    map.remove(arr[j]);
+                }
+                j++;
+            }
+            count += i - j + 1;
+        }
+        
+        return count;
+    }
