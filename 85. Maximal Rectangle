@@ -1,0 +1,60 @@
+85. Maximal Rectangle-->hard-->https://leetcode.com/problems/maximal-rectangle/description/?envType=daily-question&envId=2026-01-11
+
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix.length == 0) return 0;
+        
+        int[] heights = new int[matrix[0].length];
+        int maxArea = 0;
+        
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                heights[j] = matrix[i][j] == '1' ? heights[j] + 1 : 0;
+            }
+            maxArea = Math.max(maxArea, largestRectangleArea(heights));
+        }
+        
+        return maxArea;
+    }
+    
+    public int largestRectangleArea(int[] heights) {
+        int[] nextSmaller = nextSmaller(heights);
+        int[] prevSmaller = prevSmaller(heights);
+        int maxArea = 0;
+        
+        for(int i = 0; i < heights.length; i++) {
+            int width = nextSmaller[i] - prevSmaller[i] - 1;
+            int area = heights[i] * width;
+            maxArea = Math.max(maxArea, area);
+        }
+        
+        return maxArea;
+    }
+    
+    public int[] nextSmaller(int[] arr) {
+        int a[] = new int[arr.length];
+        Deque<Integer> dq = new ArrayDeque<>();
+        for(int i = arr.length - 1; i >= 0; i--) {
+            while(!dq.isEmpty() && arr[dq.peek()] >= arr[i]) {
+                dq.pop();
+            }
+            a[i] = dq.isEmpty() ? arr.length : dq.peek();
+            dq.push(i);  
+        }
+        return a;
+    }
+    
+    public int[] prevSmaller(int[] arr) {
+        int a[] = new int[arr.length];
+        Deque<Integer> dq = new ArrayDeque<>();
+        
+        for(int i = 0; i < arr.length; i++) {
+            while(!dq.isEmpty() && arr[dq.peek()] >= arr[i]) {
+                dq.pop();
+            }
+            a[i] = dq.isEmpty() ? -1 : dq.peek();
+            dq.push(i);  
+        }
+        return a;
+    }
+}
