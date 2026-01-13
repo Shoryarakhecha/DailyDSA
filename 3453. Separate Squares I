@@ -1,0 +1,40 @@
+3453. Separate Squares I
+
+class Solution {
+    public double areaBelow(double mid, int[][] squares) {
+        double area = 0;
+        for (int[] square : squares) {
+            double y = square[1], s = square[2];
+            if (mid >= y + s) {
+                area += s * s;
+            } else if (mid > y && mid < y + s) {
+                double height = mid - y;
+                area += s * height;
+            }
+        }
+        return area;
+    }
+    
+    public double separateSquares(int[][] squares) {
+        double totalArea = 0;
+        for (int[] square : squares) {
+            double s = square[2];
+            totalArea += s * s;
+        }        
+        double k = totalArea / 2.0;
+        
+        double low = -1e9, high = 1e9;        
+        for (int iter = 0; iter < 100; iter++) {
+            double mid = (low + high) / 2.0; 
+            double area = areaBelow(mid, squares);
+            
+            if (area < k) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        
+        return (low + high) / 2.0;
+    }
+}
