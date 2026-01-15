@@ -1,0 +1,27 @@
+2943. Maximize Area of Square Hole in Grid
+
+
+class Solution {
+    public int findMaxConsicutive(int[]bars){
+        int maxCon=1,curCon=1;
+        for(int i=1;i<bars.length;i++){
+            if(bars[i]==bars[i-1]+1){
+                curCon++;
+                maxCon=Math.max(maxCon,curCon);
+            }else{
+                curCon=1;
+            }
+        }
+        return maxCon;
+    }
+    public int maximizeSquareHoleArea(int n, int m, int[] hBars, int[] vBars) {
+        Arrays.sort(hBars);
+        Arrays.sort(vBars);
+        int hConsicutive=findMaxConsicutive(hBars);
+        int vConsicutive=findMaxConsicutive(vBars);
+
+        int side=Math.min(hConsicutive,vConsicutive)+1;
+        return side*side;
+
+    }
+}
