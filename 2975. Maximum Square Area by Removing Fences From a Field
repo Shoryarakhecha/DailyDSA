@@ -1,0 +1,37 @@
+2975. Maximum Square Area by Removing Fences From a Field
+
+class Solution {
+    public Set<Integer>GetAllDiff(int[] fences,int bound){
+        int all[]=new int[fences.length+2];
+        all[0]=1;
+        all[all.length-1]=bound;
+        for(int i=0;i<fences.length;i++){
+            all[i+1]=fences[i];
+        }
+        Arrays.sort(all);
+        Set<Integer> diffs = new HashSet<>();
+        for(int i=0;i<all.length;i++){
+            for(int j=i+1;j<all.length;j++){
+                diffs.add(all[j]-all[i]);
+            }
+        }
+
+        return diffs;
+    }
+    public int maximizeSquareArea(int m, int n, int[] hFences, int[] vFences) {
+        Set<Integer>hDiff=GetAllDiff(hFences,m);
+        Set<Integer>vDiff=GetAllDiff(vFences,n);
+        int maxSide=0;
+        for(int diff:hDiff){
+            if(vDiff.contains(diff)){
+                maxSide=Math.max(maxSide,diff);
+            }
+        }
+                
+        if (maxSide == 0) return -1;
+        
+        long area = (long) maxSide * maxSide;
+        return (int) (area % 1000000007);
+
+    }
+}
