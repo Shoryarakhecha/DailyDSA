@@ -1,0 +1,26 @@
+3047. Find the Largest Area of Square Inside Two Rectangles
+
+class Solution {
+    public long largestSquareArea(int[][] bottomLeft, int[][] topRight) {
+        long maxArea = 0;
+        int n = bottomLeft.length;        
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int overlapLeft = Math.max(bottomLeft[i][0], bottomLeft[j][0]);
+                int overlapBottom = Math.max(bottomLeft[i][1], bottomLeft[j][1]);
+                int overlapRight = Math.min(topRight[i][0], topRight[j][0]);
+                int overlapTop = Math.min(topRight[i][1], topRight[j][1]);                
+                if (overlapLeft < overlapRight && overlapBottom < overlapTop) {
+                    int width = overlapRight - overlapLeft;
+                    int height = overlapTop - overlapBottom;                    
+                    int side = Math.min(width, height);
+                    long area = (long) side * side;
+                    
+                    maxArea = Math.max(maxArea, area);
+                }
+            }
+        }
+        
+        return maxArea;
+    }
+}
