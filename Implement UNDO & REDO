@@ -1,0 +1,36 @@
+Implement UNDO & REDO
+
+class Solution {
+    StringBuilder sb = new StringBuilder();
+    Stack<Character>undo=new Stack<>();
+    Stack<Character>redo=new Stack<>();
+    
+    public void append(char x) {
+        sb.append(x);
+        undo.push(x);
+        redo.clear();
+    }
+    
+    public void undo() {
+        if (sb.length() > 0) {
+            char lastChar = sb.charAt(sb.length() - 1);
+            sb.deleteCharAt(sb.length() - 1);
+            undo.pop();
+            redo.push(lastChar);
+        }
+    }
+    
+    public void redo() {
+        if(!redo.isEmpty()){
+            char re=redo.pop();
+            sb.append(re);
+            undo.push(re);
+        }
+
+    }
+    
+    public String read() {
+        // read the document
+        return sb.toString();
+    }
+}
