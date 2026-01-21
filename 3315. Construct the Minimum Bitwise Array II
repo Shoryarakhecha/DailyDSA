@@ -1,0 +1,25 @@
+3315. Construct the Minimum Bitwise Array II
+
+
+
+class Solution {
+    public int[] minBitwiseArray(List<Integer> nums) {
+        int n=nums.size();
+        int j=0;
+        int ans[]=new int[n];
+        for(int i=0;i<n;i++){
+            if(nums.get(i)%2==0) ans[i]=-1;
+            else{
+                int cur=nums.get(i);
+                for(int k=0;k<32;k++){
+                    if((cur&(1<<k))!=0){
+                        int num=cur^(1<<k);
+                        if((num | num+1)==nums.get(i)) ans[i]=num;
+                    }
+                }
+            }
+
+        }
+        return ans;
+    }
+}
