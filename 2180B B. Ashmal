@@ -1,0 +1,35 @@
+B. Ashmal
+import java.util.*;
+public class Main {
+    public static String smallString(String ans, String str) {
+        String newStr = ans + str;
+        String newStr2 = str + ans;
+        
+        return newStr.compareTo(newStr2) < 0 ? newStr : newStr2;
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        
+        for(int i = 0; i < n; i++){
+            int m = sc.nextInt();
+            sc.nextLine();
+            
+            String[] arr = new String[m];
+            
+            for(int j = 0; j < m; j++){
+                arr[j] = sc.next();
+            }
+            
+            String ans = arr[0];
+            for(int j = 1; j < m; j++){
+                ans = smallString(ans, arr[j]);
+            }
+            
+            System.out.println(ans);
+        }
+        
+        sc.close();
+    }
+}
