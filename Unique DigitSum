@@ -1,0 +1,20 @@
+Unique DigitSum
+class Solution {
+    public int unique(int num){
+        int sum=0;
+        while(num>0){
+            sum+=num%10;
+            num/=10;
+        }
+        return sum;
+    }
+    public int uniqueDigitSums(int[] arr) {
+        // code here
+        Set<Integer>set=new HashSet<>();
+        for(int i:arr){
+            set.add(unique(i));
+        }
+        return set.size();
+        
+    }
+}
