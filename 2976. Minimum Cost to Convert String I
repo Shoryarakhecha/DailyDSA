@@ -1,0 +1,83 @@
+2976. Minimum Cost to Convert String I
+
+class Solution {
+    class Edge{
+        char dest;
+        int weight;
+        public Edge(char dest, int weight){
+            this.dest = dest;
+            this.weight = weight;
+        }
+    }
+    
+    class Pair {
+        char node;
+        int cost;
+        
+        Pair(char node, int cost) {
+            this.node = node;
+            this.cost = cost;
+        }
+    }
+    
+    public int[] dijkstra(char src, ArrayList<Edge>[] graph){
+        int[] dist = new int[26];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.cost - b.cost);
+        
+        dist[src - 'a'] = 0;
+        pq.add(new Pair(src, 0));
+
+        while(!pq.isEmpty()){
+            Pair curr = pq.poll();
+            char node = curr.node;
+            
+            if(curr.cost > dist[node - 'a']) continue;
+            
+            for(Edge e : graph[node - 'a']){
+                char neighbor = e.dest;
+                int newDist = dist[node - 'a'] + e.weight; 
+                
+                if(newDist < dist[neighbor - 'a']){
+                    dist[neighbor - 'a'] = newDist;
+                    pq.add(new Pair(neighbor, newDist));
+                }
+            }
+        }
+        
+        return dist;
+    }
+    
+    public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
+        ArrayList<Edge>[] graph = new ArrayList[26];
+        for(int i = 0; i < 26; i++){
+            graph[i] = new ArrayList<>();
+        }
+        
+        for(int i = 0; i < original.length; i++){
+            char src = original[i];
+            char dest = changed[i];
+            int c = cost[i];
+            graph[src - 'a'].add(new Edge(dest, c));
+        }        
+        int[][] allDist = new int[26][];
+        for(int i = 0; i < 26; i++){
+            allDist[i] = dijkstra((char)('a' + i), graph);
+        }        
+        long totalCost = 0;
+        for(int i = 0; i < source.length(); i++){
+            char srcChar = source.charAt(i);
+            char targetChar = target.charAt(i);
+            
+            if(srcChar == targetChar){
+                continue;
+            }
+            int conversionCost = allDist[srcChar - 'a'][targetChar - 'a'];
+            if(conversionCost == Integer.MAX_VALUE){
+                return -1;
+            }
+            totalCost += conversionCost;
+        }
+        return totalCost;
+    }
+}
