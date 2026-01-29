@@ -1,0 +1,27 @@
+Stream First Non-repeating
+
+class Solution {
+    public String firstNonRepeating(String s) {
+        // code here
+        HashMap<Character,Integer>map=new HashMap<>();
+        Queue<Character>q=new LinkedList<>();
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            map.put(ch,map.getOrDefault(ch,0)+1);
+            if(map.get(ch)==1){
+                q.offer(ch);
+            }
+            while(!q.isEmpty() && map.get(q.peek())>1){
+                q.poll();
+            }
+            if(q.isEmpty()){
+                sb.append('#');
+            }else {
+                sb.append(q.peek());
+            }
+        }
+        return sb.toString();
+        
+    }
+}
