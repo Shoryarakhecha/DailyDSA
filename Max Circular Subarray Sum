@@ -1,0 +1,38 @@
+Max Circular Subarray Sum
+
+class Solution {
+    public int kadansMax(int arr[]){
+        int maxSum=arr[0];
+        int currentSum=arr[0];
+        for(int i=1;i<arr.length;i++){
+            currentSum = Math.max(arr[i], currentSum + arr[i]);
+            maxSum = Math.max(maxSum, currentSum);
+            
+        }
+        return maxSum;
+    }
+    public int kadansMin(int arr[]){
+        int minSum=arr[0];
+        int currentSum=arr[0];
+        for(int i=1;i<arr.length;i++){
+            currentSum = Math.min(arr[i], currentSum + arr[i]);
+            minSum = Math.min(minSum, currentSum);
+        }
+        return minSum;
+    }
+    public int maxCircularSum(int arr[]) {
+        int n = arr.length;
+        
+        int max=kadansMax(arr);
+        int min=kadansMin(arr);
+        int totalSum = 0;
+        for(int i = 0; i < arr.length; i++){
+            totalSum += arr[i];
+        }
+        int maxCircular=totalSum-min;
+        if(maxCircular==0) return max;
+        
+        return Math.max(maxCircular,max);
+        
+    }
+}
