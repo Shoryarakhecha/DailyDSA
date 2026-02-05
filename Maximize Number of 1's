@@ -1,0 +1,19 @@
+Maximize Number of 1's
+class Solution {
+    public int maxOnes(int arr[], int k) {
+        // code here
+        int l=0,r=0;
+        int max=0,zCount=0;
+        while(r<arr.length){
+            if(arr[r]==0) zCount++;
+            while(l<arr.length && zCount>k){
+                if(arr[l]==0) zCount--;
+                l++;
+            }
+            max=Math.max(max,r-l+1);
+            r++;
+            
+        }
+        return max;
+    }
+}
