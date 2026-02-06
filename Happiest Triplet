@@ -1,0 +1,39 @@
+Happiest Triplet
+
+class Solution {
+    int[] smallestDiff(int a[], int b[], int c[]) {
+        Arrays.sort(a);
+        Arrays.sort(b);
+        Arrays.sort(c);
+        
+        int minDiff = Integer.MAX_VALUE;
+        int ae = 0, be = 0, ce = 0;
+        
+        int i = 0, j = 0, k = 0;
+        
+        while(i < a.length && j < b.length && k < c.length) {
+            int max = Math.max(a[i], Math.max(b[j], c[k]));
+            int min = Math.min(a[i], Math.min(b[j], c[k]));
+            int diff = max - min;
+            
+            if(diff < minDiff) {
+                ae = a[i];
+                be = b[j];
+                ce = c[k];
+                minDiff = diff;
+            }
+            
+            if(a[i] == min) {
+                i++;
+            } else if(b[j] == min) {
+                j++;
+            } else {
+                k++;
+            }
+        }
+        
+        int[] result = {ae, be, ce};
+        Arrays.sort(result);
+        return new int[]{result[2], result[1], result[0]};
+    }
+}
