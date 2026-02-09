@@ -1,0 +1,44 @@
+1382. Balance a Binary Search Tree
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public void createList(TreeNode root,ArrayList<Integer>ans){
+        if(root==null) return;
+        ans.add(root.val);
+        createList(root.left,ans);
+        createList(root.right,ans);
+
+    }
+    public TreeNode helper(ArrayList<Integer>ans,int si,int ei){
+        if(si > ei) return null;
+        int mid=si+(ei-si)/2;
+        TreeNode node=new TreeNode(ans.get(mid));
+        node.left=helper(ans,si,mid-1);
+        node.right=helper(ans,mid+1,ei);
+        
+        return node;
+    }
+
+
+    public TreeNode balanceBST(TreeNode root) {
+        ArrayList<Integer>ans=new ArrayList<>();
+        createList(root,ans);
+        Collections.sort(ans);
+        return helper(ans,0,ans.size()-1);
+        
+    }
+}
