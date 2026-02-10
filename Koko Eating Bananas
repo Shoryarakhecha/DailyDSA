@@ -1,0 +1,27 @@
+Koko Eating Bananas
+
+class Solution {
+    public boolean possible(int[] arr,int mid,int h){
+        int hours=0;
+        for(int i:arr){
+            hours+=(i+mid-1)/mid;
+            if(hours>h) return false;
+        }
+        return true;
+    }
+    public int kokoEat(int[] arr, int k) {
+        // code here
+        int max=arr[0];
+        int min=1;
+        for(int i:arr){
+            max=Math.max(max,i);
+        }
+        while(max>=min){
+            int mid=min+(max-min)/2;
+            if(possible(arr,mid,k)) max=mid-1;
+            else min=mid+1;
+        }
+        return min;
+        
+    }
+}
