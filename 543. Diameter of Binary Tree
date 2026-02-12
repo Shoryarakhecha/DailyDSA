@@ -1,0 +1,39 @@
+543. Diameter of Binary Tree
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public static class info{
+        int ht,diam;
+        public info(int ht,int diam){
+            this.ht=ht;
+            this.diam=diam;
+        }
+    }
+    public info calculateHeightAndDiameter(TreeNode root){
+        if(root==null) return new info(0,0);
+        info leftI=calculateHeightAndDiameter(root.left);
+        info rightI=calculateHeightAndDiameter(root.right);
+
+        int dia=Math.max(leftI.diam ,Math.max(rightI.diam, leftI.ht+rightI.ht));
+        int ht=Math.max(leftI.ht,rightI.ht)+1;
+
+        return new info(ht,dia);
+    }
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        return calculateHeightAndDiameter(root).diam;
+    }
+}
