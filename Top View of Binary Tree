@@ -1,0 +1,58 @@
+Top View of Binary Tree
+
+/*
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+*/
+class Solution {
+    public class Info{
+        int freq;
+        Node node;
+        public Info(int freq,Node node){
+            this.freq=freq;
+            this.node=node;
+        }
+    }
+    public ArrayList<Integer> topView(Node root) {
+        // code here
+        if(root==null) return new ArrayList<>();
+        HashMap<Integer,Node>map=new HashMap<>();
+        Queue<Info>q=new LinkedList<>();
+        int min=0;
+        int max=0;
+        q.offer(new Info(0,root));
+        map.put(0,root);
+        while(!q.isEmpty()){
+            Info cur=q.poll();
+            
+            if(!map.containsKey(cur.freq)){
+                map.put(cur.freq,cur.node);
+            }
+            
+            if(cur.node.left!=null){
+                min=Math.min(cur.freq-1,min);
+                q.offer(new Info(cur.freq-1,cur.node.left));
+            }
+            if(cur.node.right!=null){
+                
+                q.offer(new Info(cur.freq+1,cur.node.right));
+                max=Math.max(cur.freq+1,max);
+            }
+            
+            
+        }
+        ArrayList<Integer>ans=new ArrayList<>();
+        for(int i=min;i<=max;i++){
+            ans.add(map.get(i).data);
+        }
+        return ans;
+    }
+}
