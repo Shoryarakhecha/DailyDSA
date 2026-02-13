@@ -1,0 +1,78 @@
+3714. Longest Balanced Substring II
+
+class Solution {
+    int cntDouble(char x, char y, char z, String s, int n) {
+        int i = 0;
+        int max = 0;
+        while (i < n) {
+            if (s.charAt(i) == z) {
+                i++;
+                continue;
+            }
+            int j = i;
+            int cnt = 0;
+            HashMap<Integer, Integer> map = new HashMap<>();
+            map.put(0, i - 1);
+            while (j < n && s.charAt(j) != z) {
+                cnt += (s.charAt(j) == x) ? 1 :-1;
+                if (map.containsKey(cnt)) {
+                    max = Math.max(max, j - map.get(cnt));
+                } else {
+                    map.put(cnt, j);
+                }
+                j++;
+            }
+            i = j;
+        }
+        return max;
+    }
+    int cntTriple(char x, char y, char z, String s, int n) {
+        int max = 0;        
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("0,0", -1);
+        int cntX = 0, cntY = 0, cntZ = 0;
+        
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == x) cntX++;
+            else if (s.charAt(i) == y) cntY++;
+            else if (s.charAt(i) == z) cntZ++;
+            int diff1 = cntX - cntY;
+            int diff2 = cntY - cntZ;
+            String key = diff1 + "," + diff2;
+            
+            if (map.containsKey(key)) {
+                max = Math.max(max, i - map.get(key));
+            } else {
+                map.put(key, i);
+            }
+        }
+        
+        return max;
+    }
+    public int longestBalanced(String s) {
+        
+        int maxSingle=0;
+        int n=s.length();
+
+        int i=0;
+        while(i<n){
+            int j=i;
+            int cnt=0;
+            while(j<n && s.charAt(i)==s.charAt(j)){
+                cnt++;
+                j++;
+            }
+            maxSingle=Math.max(maxSingle,cnt);
+            i=j;
+        }
+
+        int maxDouble=0;
+        maxDouble=Math.max(maxDouble,cntDouble('a','b','c',s,n));
+        maxDouble=Math.max(maxDouble,cntDouble('a','c','b',s,n));
+        maxDouble=Math.max(maxDouble,cntDouble('b','c','a',s,n));
+
+        return Math.max(cntTriple('a','b','c',s,n),Math.max(maxDouble,maxSingle));
+
+        
+    }
+}
