@@ -1,0 +1,32 @@
+The Painter's Partition Problem-II
+
+
+
+class Solution {
+    public boolean isPossible(int []arr,int mid,int k){
+        int sum=0;
+        int count=1;
+        for(int i:arr){
+            if(sum+i>mid){
+                count++;
+                sum=0;
+            }
+            sum+=i;
+        }
+        return count<=k;
+    }
+    public int minTime(int[] arr, int k) {
+        int min=0;
+        int max=0;
+        for(int i:arr){
+            min=Math.max(min,i);
+            max+=i;
+        }
+        while(min<=max){
+            int mid=min+(max-min)/2;
+            if(isPossible(arr,mid,k)) max=mid-1;
+            else min=mid+1;
+        }
+        return min;
+    }
+}
