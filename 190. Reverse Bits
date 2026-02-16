@@ -1,0 +1,22 @@
+190. Reverse Bits
+class Solution {
+    public int reverseBits(int n) {
+        String str=Integer.toBinaryString(n);
+        while(str.length()<32){
+            str="0"+str;
+        }
+        StringBuilder sb=new StringBuilder(str);
+        return (int) Long.parseLong(sb.reverse().toString(),2);
+    }
+}
+// class Solution {
+//     public int reverseBits(int n) {
+//         int ans=0;
+//         for(int i=0;i<32;i++){
+//             ans=ans<<1;
+//             if((n&1)==1) ans |=1;
+//             n=n>>1;
+//         }
+//         return ans;
+//     }
+// }
