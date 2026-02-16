@@ -1,0 +1,32 @@
+938. Range Sum of BST
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public static void sumInRange(TreeNode root, int low, int high,int []ans){
+        if(root==null) return;
+        if(root.val>=low && root.val<=high){
+            ans[0]+=root.val;
+        }
+        sumInRange(root.left,low,high,ans);
+        sumInRange(root.right,low,high,ans);
+    }
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        int ans[]=new int[1];
+        sumInRange(root,low,high,ans);
+        return ans[0];
+    }
+}
