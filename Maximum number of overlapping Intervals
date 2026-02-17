@@ -1,0 +1,34 @@
+Maximum number of overlapping Intervals
+
+
+class Solution {
+    public static int overlapInt(int[][] arr) {
+        int n = arr.length;
+        int[] xArray = new int[n]; 
+        int[] yArray = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            xArray[i] = arr[i][0];
+            yArray[i] = arr[i][1];
+        }
+
+        Arrays.sort(xArray);
+        Arrays.sort(yArray);
+
+        int i = 0, j = 0;
+        int curOverlap = 0, maxOverlap = 0;
+
+        while (i < n) {
+            if (xArray[i] <= yArray[j]) { 
+                curOverlap++;
+                maxOverlap = Math.max(maxOverlap, curOverlap);
+                i++;
+            } else {                      
+                curOverlap--;
+                j++;
+            }
+        }
+
+        return maxOverlap;
+    }
+}
