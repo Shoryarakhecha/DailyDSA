@@ -1,0 +1,15 @@
+693. Binary Number with Alternating Bits
+
+class Solution {
+    public boolean hasAlternatingBits(int n) {
+        int prev=n&1;
+        while(n>0){
+            n=n>>1;
+            int cur= n&1;
+            if(cur==prev) return false;
+            else prev=cur;
+            
+        }
+        return true;
+    }
+}
