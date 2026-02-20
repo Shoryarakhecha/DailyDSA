@@ -1,0 +1,36 @@
+Form the Largest Number
+
+class Solution {
+    class Pair implements Comparable<Pair> {
+        int num;
+        
+        public Pair(int num) {
+            this.num = num;
+        }
+        
+        @Override
+        public int compareTo(Pair p2) {
+            String s1 = this.num + "" + p2.num;
+            String s2 = p2.num + "" + this.num;
+            return s2.compareTo(s1); 
+        }
+    }
+
+    public String findLargest(int[] arr) {
+        int n = arr.length;
+        StringBuilder sb = new StringBuilder();
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        
+        for (int i = 0; i < n; i++) {
+            pq.add(new Pair(arr[i]));
+        }
+        if(pq.peek().num==0) return "0";
+        while (!pq.isEmpty()) {
+            Pair p = pq.poll();
+            sb.append(p.num);
+        }
+        
+        return sb.toString();
+    }
+
+}
