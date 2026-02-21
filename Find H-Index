@@ -1,0 +1,20 @@
+Find H-Index
+
+
+class Solution {
+    public int hIndex(int[] citations) {
+        // code here
+        Arrays.sort(citations);
+        int count=0;
+        int i=citations.length-1;
+        int j=1;
+        while(i>=0){
+            if(j<=citations[i]) count++;
+            j++;
+            i--;
+        }
+        
+        
+        return count;
+    }
+}
