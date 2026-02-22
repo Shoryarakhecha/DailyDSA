@@ -1,0 +1,30 @@
+868. Binary Gap
+
+class Solution {
+    public int binaryGap(int n) {
+        String str = Integer.toBinaryString(n);
+        int max = 0;
+        int i = 0;
+
+        while (i < str.length() - 1) {
+            if (str.charAt(i) != '1') {
+                i++;
+                continue;
+            }
+
+            int j = i + 1;
+            int count = 1;
+            while (j < str.length() && str.charAt(j) != '1') {
+                count++;
+                j++;
+            }
+            if (j < str.length()) {
+                max = Math.max(max, count);
+            }
+
+            i++;
+        }
+
+        return max;
+    }
+}
