@@ -1,0 +1,43 @@
+1461. Check If a String Contains All Binary Codes of Size K
+
+class Solution {
+    public boolean hasAllCodes(String s, int k) {
+        int total = (int) Math.pow(2, k);
+        boolean arr[]=new boolean [total];
+        for(int i=0;i<=s.length()-k;i++){
+            String str=s.substring(i,i+k);
+            int indx=Integer.parseInt(str,2);
+            if(arr[indx]==false) arr[indx]=true;
+        }
+        
+        int count=0;
+        for(int i=0;i<total;i++){
+            if(arr[i]==false) return false;
+        }
+        return true;
+    }
+}
+
+more optimized-->
+class Solution {
+    public boolean hasAllCodes(String s, int k) {
+        int need = 1 << k; 
+        
+        if (s.length() < k) return false;
+
+        HashSet<String> st = new HashSet<>();
+        
+        for (int i = 0; i <= s.length() - k; i++) {
+            String sub = s.substring(i, i + k);
+            st.add(sub);
+            
+            if (st.size() == need) {
+                return true;
+            }
+        }
+        
+        return false;
+
+        
+    }
+}
