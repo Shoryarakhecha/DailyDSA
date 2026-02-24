@@ -1,0 +1,24 @@
+Longest Span in two Binary Arrays
+
+
+class Solution {
+    public int equalSumSpan(int[] a1, int[] a2) {
+        // code here
+        HashMap<Integer,Integer>map=new HashMap<>();
+        map.put(0,-1);
+        int max=0;
+        int s1=0;
+        int s2=0;
+        for(int i=0;i<a1.length;i++){
+            s1+=a1[i];
+            s2+=a2[i];
+            int diff=s2-s1;
+            if(map.containsKey(diff)){
+                max=Math.max(max,i-map.get(diff));
+            }else{
+                map.put(diff,i);
+            }
+        }
+        return max;
+    }
+}
