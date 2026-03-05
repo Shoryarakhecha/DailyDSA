@@ -1,0 +1,29 @@
+Longest Substring with K Uniques
+
+class Solution{
+    public int longestKSubstr(String s, int k) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int l = 0, r = 0, len = -1;  
+
+        while (r < s.length()) {
+            map.put(s.charAt(r), map.getOrDefault(s.charAt(r), 0) + 1);
+
+            while (map.size() > k) {
+                int freq = map.get(s.charAt(l)) - 1;
+                map.put(s.charAt(l), freq);
+                if (freq == 0) {
+                    map.remove(s.charAt(l));
+                }
+                l++;
+            }
+
+            if (map.size() == k) {  
+                len = Math.max(r - l + 1, len);
+            }
+
+            r++;
+        }
+
+        return len; 
+    }
+}
