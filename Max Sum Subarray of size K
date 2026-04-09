@@ -1,0 +1,20 @@
+Max Sum Subarray of size K
+class Solution {
+    public int maxSubarraySum(int[] arr, int k) {
+        // Code here
+        int sum=0;
+        int max=0;
+        int si=0;
+        int ei=0;
+        while(ei<arr.length){
+            if(ei-si+1>k){
+                sum-=arr[si];
+                si++;
+            }
+            sum+=arr[ei];
+            max=Math.max(max,sum);
+            ei++;
+        }
+        return max;
+    }
+}
