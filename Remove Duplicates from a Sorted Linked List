@@ -1,0 +1,23 @@
+Remove Duplicates from a Sorted Linked List
+
+
+class Solution {
+    Node removeDuplicates(Node head) {
+        if (head == null) return head; 
+        
+        Node prev = head;
+        Node cur = head.next;
+        
+        while (cur != null) {
+            if (cur.data != prev.data) {
+                prev.next = cur;
+                prev = prev.next;
+            }
+            cur = cur.next;
+        }
+        
+        prev.next = null; 
+        
+        return head;
+    }
+}
