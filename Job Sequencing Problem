@@ -1,0 +1,101 @@
+Job Sequencing Problem
+
+not optimized solution it will give you tle
+class Solution {
+    class Pair implements Comparable<Pair>{
+        int prof,dead;
+        public Pair(int prof,int dead){
+            this.prof=prof;
+            this.dead=dead;
+        }
+        @Override
+        public int compareTo(Pair p2){
+            return p2.prof-this.prof;
+        }
+    }
+    public ArrayList<Integer> jobSequencing(int[] d, int[] p) {
+        // code here
+        
+        int n=0;
+        PriorityQueue<Pair>pq=new PriorityQueue<>();
+        for(int i=0;i<d.length;i++){
+            n=Math.max(n,d[i]);
+            pq.add(new Pair(p[i],d[i]));
+        }
+        int arr[]=new int[n+1];
+        for(int i=0;i<=n;i++){
+            arr[i]=-1;
+        }
+        int count=0;
+        int total=0;
+        while(!pq.isEmpty()){
+            Pair cur=pq.poll();
+            for(int j=cur.dead;j>=1;j--){
+                if(arr[j]==-1){
+                    arr[j]=cur.prof;
+                    count++;
+                    total+=cur.prof;
+                    break;
+                }
+            }
+        }
+        return new ArrayList<>(Arrays.asList(count,total));
+    }
+}
+
+
+
+class Solution {
+    // DSU to find nearest free slot 
+    int[] parent;
+
+    int find(int x) {
+        if (parent[x] == x) return x;
+        return parent[x] = find(parent[x]); 
+    }
+
+    class Pair implements Comparable<Pair> {
+        int prof, dead;
+        public Pair(int prof, int dead) {
+            this.prof = prof;
+            this.dead = dead;
+        }
+        @Override
+        public int compareTo(Pair p2) {
+            return p2.prof - this.prof; 
+        }
+    }
+
+    public ArrayList<Integer> jobSequencing(int[] d, int[] p) {
+        int n = 0;
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+
+        for (int i = 0; i < d.length; i++) {
+            n = Math.max(n, d[i]);
+            pq.add(new Pair(p[i], d[i]));
+        }
+
+        // parent[i] = nearest free slot <= i
+        parent = new int[n + 1];
+        for (int i = 0; i <= n; i++) parent[i] = i;
+
+        int count = 0, totalProfit = 0;
+
+        while (!pq.isEmpty()) {
+            Pair cur = pq.poll();
+
+            int slot = find(cur.dead); 
+
+            if (slot > 0) {
+                count++;
+                totalProfit += cur.prof;
+                parent[slot] = slot - 1; 
+            }
+        }
+
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(count);
+        result.add(totalProfit);
+        return result;
+    }
+}
